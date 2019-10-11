@@ -26,8 +26,9 @@ public class AdminServices {
     //////// BOOK SERVICES /////////
     //////// BOOK SERVICES /////////
 
-//    @Autowired
-//    private Adm
+    @Autowired
+    private AdminBookDao Book, Connection;
+
     public void deleteBook(Book book, Connection connection)
     {
         System.out.println("<htm><h1> HELLO </h1></html>");

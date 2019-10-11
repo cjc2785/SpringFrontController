@@ -1,5 +1,6 @@
 HELP.md
 target/
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
@@ -22,6 +23,7 @@ target/
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
+*ServerCredential.java
 /dist/
 /nbdist/
 /.nb-gradle/

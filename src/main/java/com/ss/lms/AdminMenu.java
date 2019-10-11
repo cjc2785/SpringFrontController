@@ -71,6 +71,7 @@ public class AdminMenu {
                 book.setBookId(scan.nextInt());
                 admin.updateBook(book,connection);
                 runBookMenu(connection);
+                scan.close();
                 break;
             case 3:
 
@@ -79,6 +80,7 @@ public class AdminMenu {
                 book.setBookId(scan.nextInt());
                 admin.deleteBook(book,connection);
                 runBookMenu(connection);
+                scan.close();
                 break;
             case 4:
                 list.listBooks(connection);
@@ -86,6 +88,7 @@ public class AdminMenu {
                 System.out.println("press [Enter] to continue");
                 scan.nextLine();
                 runBookMenu(connection);
+                scan.close();
                 break;
         }
     }
@@ -93,8 +96,6 @@ public class AdminMenu {
     public void runBookSubMenu(Connection connection) throws SQLException
     {
         Book book = new Book();
-        Author author = new Author();
-        Publisher publisher = new Publisher();
         view.printBookSubMenu();
         int choice = getInput();
         switch (choice)
@@ -311,6 +312,7 @@ public class AdminMenu {
                 System.out.println("Not a valid selection. Please try again.");
             }
         }
+        kbInput.close();
         return choice;
     }
 }

@@ -5,7 +5,6 @@ import com.ss.lms.services.AdminServices;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class AdminView {
     private DataConnector dataConnector = new DataConnector();
@@ -13,8 +12,6 @@ public class AdminView {
     public void dueDateList() throws SQLException {
         Connection connection = dataConnector.getCurrConnection();
         System.out.println("Listing Users");
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
         AdminServices myAdmin = new AdminServices();
 
         myAdmin.listBorrower(connection);

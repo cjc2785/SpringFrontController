@@ -1,8 +1,6 @@
 package com.ss.lms.dao;
 
-import com.ss.lms.model.Borrower;
 import com.ss.lms.model.Publisher;
-import com.ss.lms.secret.GenerateID;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

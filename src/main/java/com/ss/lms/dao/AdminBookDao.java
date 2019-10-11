@@ -1,10 +1,13 @@
 package com.ss.lms.dao;
 
 import com.ss.lms.model.Book;
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Component
 public class AdminBookDao implements AdminDao<Book, Connection> {
     @Override
     public void add(Book book, Connection connection) throws SQLException {

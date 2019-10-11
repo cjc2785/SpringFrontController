@@ -1,11 +1,13 @@
 package com.ss.lms.dao;
 
 import com.ss.lms.model.LibraryPOJO;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Component
 public class AdminLibBranchDao implements AdminDao<LibraryPOJO, Connection> {
     @Override
     public void add(LibraryPOJO library, Connection connection) throws SQLException {

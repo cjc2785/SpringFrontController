@@ -23,7 +23,6 @@ target/
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
-/src/main/java/com/ss/lms/secret/ServerCredential.java
 /dist/
 /nbdist/
 /.nb-gradle/

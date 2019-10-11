@@ -95,9 +95,6 @@ public class UI {
 		System.out.println("|  \\/_____/ \\/_____/ \\/_/ /_/ \\/_/ /_/ \\/_____/ \\/_/   \\/_/ \\/_____/ \\/_/ /_/    |");
 		System.out.println("|                                                                                |");
 		System.out.println("|                                                                                |");
-		System.out.println( ConsoleColors.RESET+"| "+ConsoleColors.BLUE_BACKGROUND+"Account #:"+BorrowerService.borrower.getBorrowerCardNumber()
-		                   +" "+"Name:"+BorrowerService.borrower.getBorrowerName()+ConsoleColors.RESET+
-			           	   "                                                       |");
 		System.out.print(ConsoleColors.PURPLE_BOLD);
 		System.out.println("|                                                                                |");
 		System.out.println("| "+ConsoleColors.BLUE_BACKGROUND_BRIGHT+"[1) Check out Book]"+ConsoleColors.RESET+ConsoleColors.PURPLE_BOLD+"                                                            |");

@@ -1,4 +1,4 @@
-package com.ss.SpringLMS;
+package com.ss.lms;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,7 @@ public class SpringLmsApplicationTests {
 
 	@Test
 	public void contextLoads() {
+
 	}
 
 }

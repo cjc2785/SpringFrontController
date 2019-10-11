@@ -3,11 +3,16 @@ package com.ss.lms.services;
 import com.ss.lms.dao.*;
 import com.ss.lms.model.*;
 import com.ss.lms.secret.GenerateID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.sql.*;
 import java.util.Scanner;
 
 
+@Service
 public class AdminServices {
     private AdminDao<Book, Connection> bookDao = new AdminBookDao();
     private AdminDao<Borrower, Connection> borrowerDao = new AdminBorrowerDao();
@@ -20,9 +25,13 @@ public class AdminServices {
     //////// BOOK SERVICES /////////
     //////// BOOK SERVICES /////////
     //////// BOOK SERVICES /////////
-	
+
+    @Autowired
+    private AdminBookDao Book, Connection;
+
     public void deleteBook(Book book, Connection connection)
     {
+        System.out.println("<htm><h1> HELLO </h1></html>");
 
         try{
             int bookID = book.getBookId();

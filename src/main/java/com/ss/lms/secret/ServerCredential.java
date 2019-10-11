@@ -2,11 +2,11 @@ package com.ss.lms.secret;
 
 public class ServerCredential {
 
-    public String getServerPWord ()
+    public static final String getServerPWord ()
     {
-        return "pass";
+        return "admin";
     }
-     public String  getServerUser()
+     public static final String  getServerUser()
     {
         return "root";
     }

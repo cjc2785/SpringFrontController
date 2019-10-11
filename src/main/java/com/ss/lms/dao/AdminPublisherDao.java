@@ -1,12 +1,14 @@
 package com.ss.lms.dao;
 
 import com.ss.lms.model.Publisher;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 
+@Component
 public class AdminPublisherDao implements AdminDao<Publisher, Connection> {
 
     @Override

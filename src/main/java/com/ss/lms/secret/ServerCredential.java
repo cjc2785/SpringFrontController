@@ -4,10 +4,10 @@ public class ServerCredential {
 
     public static final String getServerPWord ()
     {
-        return "Input Password";
+        return "admin";
     }
      public static final String  getServerUser()
     {
-        return "Input User Login";
+        return "root";
     }
 }

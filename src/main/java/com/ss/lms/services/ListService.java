@@ -1,6 +1,5 @@
 package com.ss.lms.services;
 
-import com.ss.lms.model.Borrower;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,14 +1,11 @@
 package com.ss.lms.services;
 
-import com.ss.lms.AdminMenu;
 import com.ss.lms.dao.*;
 import com.ss.lms.model.*;
 import com.ss.lms.secret.GenerateID;
 
 import java.sql.*;
-import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.SortedMap;
 
 
 public class AdminServices {
@@ -99,6 +96,7 @@ public class AdminServices {
                 Scanner scanner = new Scanner(System.in);
                 book.setBookTitle(scanner.nextLine());
                 bookDao.update(book, connection);
+                scanner.close();
             }
 
         }catch (SQLException e)
@@ -217,6 +215,7 @@ public class AdminServices {
                 }
 
             }
+            scanner.close();
 
         } catch (SQLException e) {
             e.printStackTrace();

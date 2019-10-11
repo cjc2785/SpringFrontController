@@ -1,7 +1,6 @@
 package com.ss.lms.dao;
 
 import com.ss.lms.model.LibraryPOJO;
-import com.ss.lms.secret.GenerateID;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,7 +1,4 @@
-package com.ss.lms.dao.db;
-
-
-import com.ss.lms.dao.DataConnector;
+package com.ss.lms.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,27 +10,25 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /*
  * Db is a Singleton. The first time Db.getConnection() 
  * 	is called, a new connection is created. Subsequent calls will
  * 	return the same connection
  */
 
+@Component
 public class Db {
 
-	private static DataConnector connector = new DataConnector();
 	
-	
-	private static Db _instance = new Db();
-	
-	private Db() { }
+	@Autowired
+	private DataSource source;
 
-	// Initialize the Singleton if necessary
-	public static Db getConnection() {
-		return _instance;
-	}
-	
-
+	private Connection connection;
 	
 
 	/*
@@ -49,7 +44,7 @@ public class Db {
 			Consumer<QueryParameterList> injector) 
 			throws SQLException {
 		
-		Connection connection = getCurrConnection();
+		Connection connection = getConnection();
 
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -93,7 +88,7 @@ public class Db {
 	public int withUpdate(String sql, Consumer<QueryParameterList> injector) 
 			throws SQLException {
 		
-		Connection connection = getCurrConnection();
+		Connection connection = getConnection();
 
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
 			
@@ -125,7 +120,10 @@ public class Db {
 		return rows;
 	}
 	
-	private Connection getCurrConnection() throws SQLException {
-		return connector.getCurrConnection();
+	private Connection getConnection() throws SQLException {
+		if(connection == null) {
+			connection = source.getConnection();
+		}
+		return connection;
 	}
 }

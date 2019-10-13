@@ -4,22 +4,18 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import com.ss.lms.dao.db.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.ss.lms.db.*;
 import com.ss.lms.model.*;
 
+@Component
 public class BookCopiesDao {
 
+	@Autowired
 	private Db db;
 
-	private static BookCopiesDao dao = new BookCopiesDao(Db.getConnection());
-
-	public static BookCopiesDao getDao() {
-		return dao;
-	}
-
-	public BookCopiesDao(Db db) {
-		this.db = db;
-	}
 
 	//Get all books that have copies remaining at the branch
 	public List<BookCopies> get(LibraryBranch branch) throws SQLException {

@@ -5,22 +5,18 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import com.ss.lms.dao.db.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.ss.lms.db.*;
 import com.ss.lms.model.*;
 
+@Component
 public class BookLoanDao {
 
+	@Autowired
 	private Db db;
 
-	private static BookLoanDao dao = new BookLoanDao(Db.getConnection());
-
-	public static BookLoanDao getDao() {
-		return dao;
-	}
-
-	public BookLoanDao(Db db) {
-		this.db = db;
-	}
 
 	//Get all loans by the borrower
 	public List<BookLoans> getByBorrower(Borrower borrower) throws SQLException {

@@ -2,24 +2,21 @@ package com.ss.lms.dao;
 
 import java.sql.SQLException;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
-import com.ss.lms.dao.db.*;
+import com.ss.lms.db.*;
 import com.ss.lms.model.*;
 
+@Component
 public class BorrowerDao {
 
+	@Autowired
 	private Db db;
-	
-	private static BorrowerDao dao = new BorrowerDao(Db.getConnection());
-	
-	public static BorrowerDao getDao() {
-		return dao;
-	}
-	
-	public BorrowerDao(Db db) {
-		this.db = db;
-	}
+
 
 	public Optional<Borrower> get(int cardNo) throws SQLException {
 		

@@ -4,28 +4,20 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ss.lms.dao.*;
 import com.ss.lms.model.*;
 
+@Service
 public class BookLoanService {
-
+	
+	@Autowired
 	private BookLoanDao loanDao;
+	
+	@Autowired
 	private BookCopiesDao copiesDao;
-	
-	private static BookLoanService service = new BookLoanService(
-			BookLoanDao.getDao(),
-			BookCopiesDao.getDao()
-			);
-	
-	public static BookLoanService getService() {
-		return service;
-	}
-	
-	private BookLoanService(BookLoanDao loanDao, BookCopiesDao copiesDao) {
-		this.loanDao = loanDao;
-		this.copiesDao = copiesDao;
-	}
-	
 	
 
 	public List<BookLoans> getByBorrower(Borrower borrower, LibraryBranch branch) throws SQLException {

@@ -1,4 +1,4 @@
-package com.ss.lms.dao.db;
+package com.ss.lms.db;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

@@ -32,5 +32,4 @@ public class LibraryBranch {
 	public void setBranchAddress(String branchAddress) {
 		this.branchAddress = branchAddress;
 	}
-
 }

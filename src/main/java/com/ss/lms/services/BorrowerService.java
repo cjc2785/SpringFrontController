@@ -4,25 +4,19 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ss.lms.dao.*;
 import com.ss.lms.model.*;
 
+@Service
 public class BorrowerService {
 
+	@Autowired
 	private BorrowerDao borrowerDao;
 	
-	private static BorrowerService service = new BorrowerService(
-			BorrowerDao.getDao()
-			);
-	
-	public static BorrowerService getService() {
-		return service;
-	}
-	
-	private BorrowerService(BorrowerDao borrowerDao) {
-		this.borrowerDao = borrowerDao;
-	}
-	
+
 	public void delete(Borrower borrower) throws SQLException {
 		borrowerDao.delete(borrower);
 	}

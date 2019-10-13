@@ -1,17 +1,28 @@
 package com.ss.lms.services;
 
 import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ss.lms.exceptions.*;
 import com.ss.lms.dao.*;
 import com.ss.lms.model.*;
 
 @Service
 public class BookLoanService {
+	
+	@Autowired
+	private BorrowerDao borrowerDao;
+	
+	@Autowired
+	private LibraryBranchDao branchDao;
+	
+	@Autowired
+	private BookDao bookDao;
 	
 	@Autowired
 	private BookLoanDao loanDao;
@@ -20,8 +31,8 @@ public class BookLoanService {
 	private BookCopiesDao copiesDao;
 	
 
-	public List<BookLoans> getByBorrower(Borrower borrower, LibraryBranch branch) throws SQLException {
-		return loanDao.getByBorrower(borrower, branch);
+	public List<BookLoans> getAll(Borrower borrower, LibraryBranch branch) throws SQLException {
+		return loanDao.getAll(borrower, branch);
 	}
 	
 	public Optional<BookLoans> get(Borrower borrower, LibraryBranch branch, Book book) 
@@ -37,22 +48,48 @@ public class BookLoanService {
 	}
 	
 	//Also decrements the noOfCopies 
-	//Idempotent (Will do nothing if the loan already exists)
-	//Don't call if there are no copies of the book in the library
-	public void insertLoan(BookLoans loan) throws SQLException {
+	//Throws EntityDoesNotExistException if the 
+	//  borrower, branch, or book does not exist
+	//Throws DuplicateIdException if the loan exists
+	public void insert(BookLoans loan) throws 
+		EntityDoesNotExistException, DuplicateIdException, SQLException {
 		
-		Borrower borrower = new Borrower(loan.getCardNo(), null, null, null);
-		LibraryBranch branch = new LibraryBranch(loan.getBranchId(), null, null);
-		Book book = new Book(loan.getBookId(), null, null, null);
 		
+		
+		//Validate the loan
+		
+		Optional<Borrower> optBorrower = borrowerDao.get(loan.getCardNo());
+		
+		if(optBorrower.isEmpty()) {
+			throw new EntityDoesNotExistException("borrower");
+		}
+		
+		Borrower borrower = optBorrower.get();
+		Optional<LibraryBranch> optBranch = branchDao.get(loan.getBranchId());
+		
+		if(optBranch.isEmpty()) {
+			throw new EntityDoesNotExistException("branch");
+		}
+		
+		LibraryBranch branch = optBranch.get();
+		
+		Optional<Book> optBook = bookDao.get(branch, loan.getBookId());
+		
+		if(optBook.isEmpty()) {
+			throw new EntityDoesNotExistException("book");
+		}
+		
+		Book book = optBook.get();
 		Optional<BookLoans> existing = loanDao.get(
 				borrower, branch, book
 				);
 		
-		//Do nothing if the loan exists
+		//Throw if the loan exists
 		if(existing.isPresent()) {
-			return;
+			throw new DuplicateIdException();
 		}
+		
+	
 		
 		BookCopies copies = copiesDao.get(branch,  book).get();
 		
@@ -64,9 +101,9 @@ public class BookLoanService {
 	}
 	
 	//Also increments the noOfCopies 
-	//Idempotent (Will do nothing if the loan already exists)
-	//Don't call if there were never any copies of the book in the library
-	public void deleteLoan(BookLoans loan) throws SQLException {
+	//Throws EntityDoesNotExistException if the loan exists
+	public void delete(BookLoans loan) 
+			throws EntityDoesNotExistException, SQLException {
 		
 		Borrower borrower = new Borrower(loan.getCardNo(), null, null, null);
 		LibraryBranch branch = new LibraryBranch(loan.getBranchId(), null, null);
@@ -76,10 +113,13 @@ public class BookLoanService {
 				borrower, branch, book
 				);
 		
-		//Do nothing if the loan does not exist
+		//throw if the loan does not exist
 		if(existing.isEmpty()) {
-			return;
+			throw new EntityDoesNotExistException("loan");
 		}
+		
+		
+		
 		BookCopies copies = copiesDao.get(branch, book).get();
 		
 		//increment the noOfCopies

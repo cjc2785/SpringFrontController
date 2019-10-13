@@ -54,6 +54,22 @@ public class BookDao {
 				});
 	}
 	
+	public Optional<Book> get(LibraryBranch branch, int bookId) throws SQLException {
+		
+		String query = "SELECT * FROM library.tbl_book b " 
+				+ "JOIN library.tbl_author a ON a.authorId=b.authId " 
+				+ "JOIN library.tbl_publisher p ON p.publisherId=b.pubId "
+				+ "JOIN library.tbl_book_loans bl ON bl.bookId=b.bookId "
+				+ "JOIN library.tbl_library_branch lb ON lb.branchId=bl.branchId "
+				+ "WHERE b.bookId = ? AND "
+				+ "lb.branchId=?";
+		return db.withQueryOne(query, this::rowToBook,
+				parameterList -> {
+				parameterList.setInt(1, bookId);
+				parameterList.setInt(2, branch.getBranchId());
+				});	
+	}
+	
 	public List<Book> getAll(Borrower borrower, LibraryBranch branch)
 			throws SQLException {
 		

@@ -37,7 +37,7 @@ public class BookLoanDao {
 	}
 
 	//Get all loans by the borrower at the branch
-	public List<BookLoans> getByBorrower(Borrower borrower, LibraryBranch branch)
+	public List<BookLoans> getAll(Borrower borrower, LibraryBranch branch)
 			throws SQLException {
 
 		String query = "SELECT * FROM library.tbl_book b " +

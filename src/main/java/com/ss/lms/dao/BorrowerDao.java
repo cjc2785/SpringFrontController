@@ -1,92 +1,48 @@
 package com.ss.lms.dao;
 
-import java.sql.SQLException;
-import java.util.Optional;
-
+import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-import com.ss.lms.db.*;
 import com.ss.lms.model.*;
 
 @Component
 public class BorrowerDao {
-
+	
 	@Autowired
-	private Db db;
+	RestTemplate template;
+	
+	static final String BASE = "http://localhost:8080/lms/borrower/";
 
-
-	public Optional<Borrower> get(int cardNo) throws SQLException {
+	public LibraryBranch[] getBranches() {
 		
-		String query = "SELECT * FROM library.tbl_borrower bor " + 
-				"WHERE bor.cardNo=?";
-		
-		List<Borrower> borrowers = db.withQuery(
-				query, 
-				this::rowToBorrower, 
-				parameterList -> {
-					parameterList.setInt(1, cardNo);
-				});
-		
-		return borrowers.isEmpty() ?
-				Optional.empty() : 
-				Optional.of(borrowers.get(0));
+		String url = BASE + "branches";
+		return template.getForObject(
+				url, LibraryBranch[].class);
 	}
 	
-	public List<Borrower> getAll() throws SQLException{
-		String query = "SELECT * FROM library.tbl_borrower ";
-				
-			return db.withQuery(query, this::rowToBorrower);
+	public LibraryBranch[] getBranches(int cardNo) {
+		
+		String url = BASE + "branches/{cardNo}/branches";
+		
+		return template.getForObject(
+				url, LibraryBranch[].class, cardNo);
 	}
 	
-	public void delete(Borrower borrower) throws SQLException {
+	public Book[] getBooks(int branchId) {
 		
-		String query = "DELETE FROM library.tbl_borrower " + 
-				"WHERE cardNo=?";
+		String url = BASE + "branches/{branchId}/books";
 		
-		db.withUpdate(query, parameterList -> {
-			parameterList.setInt(1, borrower.getBorrowerCardNumber());
-		});
+		return template.getForObject(
+				url, Book[].class, branchId);
 	}
 	
-	public void insert(Borrower borrower) throws SQLException {
+	public Book[] getBooks(int cardNo, int branchId) {
 		
-		String query = "INSERT INTO library.tbl_borrower VALUES " + 
-				"(?,?,?,?) ";
+		String url = BASE 
+				+ "borrowers/{cardNo}/branches/{branchId}/books";
 		
-		db.withUpdate(query, parameterList -> {
-			parameterList.setInt(1, borrower.getBorrowerCardNumber());
-			parameterList.setString(2, borrower.getBorrowerName());
-			parameterList.setString(3, borrower.getBorrowerAddress());
-			parameterList.setString(4, borrower.getBorrowerPhoneNumber());
-		});
-	}
-	
-	public void update(Borrower borrower) throws SQLException {
-		
-		String query = "UPDATE library.tbl_borrower SET " + 
-				"Name=?, " +
-				"Address=?, " +
-				 "Phone=?" +
-				"WHERE cardNo=?";
-		
-		db.withUpdate(query, parameterList -> {
-			parameterList.setString(1, borrower.getBorrowerName());
-			parameterList.setString(2, borrower.getBorrowerAddress());
-			parameterList.setString(3, borrower.getBorrowerPhoneNumber());
-			parameterList.setInt(4, borrower.getBorrowerCardNumber());
-		});
-	}
-	
-	private Borrower rowToBorrower(TableRow row) {
-		
-		int cardNo = row.getInt("cardNo");
-		String name = row.getString("name");
-		String address = row.getString("address");
-		String phone = row.getString("phone");
-		
-		return new Borrower(cardNo, name, address, phone);
+		return template.getForObject(
+				url, Book[].class, cardNo, branchId);
 	}
 }

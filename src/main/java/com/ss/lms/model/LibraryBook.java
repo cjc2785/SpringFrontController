@@ -1,16 +1,8 @@
 package com.ss.lms.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-@Entity
-@IdClass(BookCopiesId.class)
-@Table (name = "tbl_book_copies", schema="library")
+
 public class LibraryBook {
-	@Id
 	private int bookId;
-	@Id
 	private int branchId;
 	private Integer noOfCopies;
 		

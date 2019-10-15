@@ -47,9 +47,8 @@ public class LibrarianController {
 	
 	@PutMapping("branch/{branchId}")
 	@ResponseBody public void updateBranch(@PathVariable int branchId, @RequestBody BranchPOJO updateBranch){
-		BranchPOJO branch = library.getBranchInfo(branchId);		
 		try {
-			library.save(branch);
+			library.save(updateBranch, branchId);
 		}catch(HttpClientErrorException e){
 			switch(e.getStatusCode()) {
 			case NOT_FOUND:
@@ -60,7 +59,6 @@ public class LibrarianController {
 		}		
 	}
 	
-	//needs 404
 	@GetMapping("branch/{branchId}/books")
 	@ResponseBody public LibraryPOJO[] getBooks(@PathVariable int branchId) {
 		try {

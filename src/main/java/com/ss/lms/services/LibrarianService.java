@@ -22,8 +22,8 @@ public class LibrarianService {
 		return library.getBranchInfo(branchId);
 	}
 	
-	public void save(BranchPOJO updateBranch) {
-		library.save(updateBranch);
+	public void save(BranchPOJO updateBranch, int branchId) {
+		library.save(updateBranch, branchId);
 	}
 	
 	public LibraryPOJO[] getBooks(int branchId) {

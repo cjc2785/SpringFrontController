@@ -6,7 +6,8 @@ public class LibraryBranch {
 	private String branchName;
 	private String branchAddress;
 	
-	public LibraryBranch() {};
+	public LibraryBranch() {}
+	
 	public LibraryBranch(int Id, String name, String address) {
 		branchId = Id;
 		branchName = name;

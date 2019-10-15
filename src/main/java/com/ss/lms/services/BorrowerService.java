@@ -33,4 +33,12 @@ public class BorrowerService {
 		
 		return borrowerDao.getBooks(cardNo, branchId);
 	}
+	
+	public void insertLoan(int cardNo, int branchId, int bookId) {
+		borrowerDao.insertLoan(cardNo, branchId, bookId);
+	}
+	
+	public void deleteLoan(int cardNo, int branchId, int bookId) {
+		borrowerDao.deleteLoan(cardNo, branchId, bookId);
+	}
 }

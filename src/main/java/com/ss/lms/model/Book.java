@@ -7,6 +7,8 @@ public class Book {
 	private Author author;
 	private Publisher publisher;
 	
+	public Book() { }
+	
 	public Book(int bookId, String title, Author author, Publisher publisher) {
 		this.bookId = bookId;
 		this.title = title;

@@ -4,48 +4,48 @@ public class Publisher {
     private Integer publisherId;
     private String publisherName;
     private String publisherAddress;
-    private String publisherPhoneNumber;
+    private String publisherPhone;
 
     
-    public Publisher() {};
+    public Publisher() {}
     
-    public Publisher(Integer pubId, String pubName, String pubAddress, String pubPhone) {
-    	publisherId = pubId;
-    	publisherName = pubName;
-    	publisherAddress = pubAddress;
-    	publisherPhoneNumber = pubPhone;
-    }
-    
-    
-    public Integer getPublisherId() {
-        return publisherId;
-    }
-
-    public void setPublisherId(Integer publisherId) {
-        this.publisherId = publisherId;
-    }
-
-    public String getPublisherName() {
-        return publisherName;
-    }
-
-    public void setPublisherName(String publisherName) {
-        this.publisherName = publisherName;
-    }
-
-    public String getPublisherAddress() {
-        return publisherAddress;
-    }
-
-    public void setPublisherAddress(String publisherAddress) {
-        this.publisherAddress = publisherAddress;
-    }
-
-	public String getPublisherPhoneNumber() {
-		return publisherPhoneNumber;
+	public Publisher(Integer publisherId, String publisherName, String publisherAddress, String publisherPhone) {
+		this.publisherId = publisherId;
+		this.publisherName = publisherName;
+		this.publisherAddress = publisherAddress;
+		this.publisherPhone = publisherPhone;
 	}
 
-	public void setPublisherPhoneNumber(String publisherPhone) {
-		this.publisherPhoneNumber = publisherPhone;
+
+	public Integer getPublisherId() {
+		return publisherId;
+	}
+
+	public void setPublisherId(Integer publisherId) {
+		this.publisherId = publisherId;
+	}
+
+	public String getPublisherName() {
+		return publisherName;
+	}
+
+	public void setPublisherName(String publisherName) {
+		this.publisherName = publisherName;
+	}
+
+	public String getPublisherAddress() {
+		return publisherAddress;
+	}
+
+	public void setPublisherAddress(String publisherAddress) {
+		this.publisherAddress = publisherAddress;
+	}
+
+	public String getPublisherPhone() {
+		return publisherPhone;
+	}
+
+	public void setPublisherPhone(String publisherPhone) {
+		this.publisherPhone = publisherPhone;
 	}
 }

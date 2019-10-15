@@ -8,7 +8,8 @@ public class Author {
     private  String authorName;
     
 
-    public Author(){};
+    public Author(){}
+    
     public Author(Integer auth, String authName){
     	authorId = auth;
     	authorName = authName;

@@ -1,14 +1,7 @@
 package com.ss.lms.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table (name = "tbl_library_branch", schema="library")
 public class BranchPOJO {
 	
-	@Id
 	private int branchId;
 	private String branchName;
 	private String branchAddress;

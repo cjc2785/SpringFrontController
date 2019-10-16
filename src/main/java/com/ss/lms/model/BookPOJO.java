@@ -1,14 +1,7 @@
 package com.ss.lms.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table (name = "tbl_book", schema = "library")
 public class BookPOJO {
 
-	@Id
 	private int bookId;
 	private String title;
 	

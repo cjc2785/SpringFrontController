@@ -2,6 +2,7 @@ package com.ss.lms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.ss.lms.model.BranchPOJO;
 import com.ss.lms.model.LibraryPOJO;
@@ -25,79 +25,88 @@ public class LibrarianController {
 	@Autowired
 	private LibrarianService library;
 
-	@GetMapping("branches")
+	@GetMapping(value = "branches", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ResponseBody public ResponseEntity<?> getBranches(){
 		BranchPOJO[] branch = library.getBranches();
 		return new ResponseEntity<BranchPOJO[]>(branch, HttpStatus.OK);
 	}
 	
-	@GetMapping("branch/{branchId}")
-	@ResponseBody public BranchPOJO getBranchInfo(@PathVariable int branchId){
+	@GetMapping(value = "branch/{branchId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ResponseBody public ResponseEntity<?> getBranchInfo(@PathVariable int branchId){
 		try {
-			return library.getBranchInfo(branchId);
+			BranchPOJO branch = library.getBranchInfo(branchId);
+			return new ResponseEntity<BranchPOJO>(branch, HttpStatus.OK);
 		}catch(HttpClientErrorException e){
 			switch(e.getStatusCode()) {
 			case NOT_FOUND:
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>("Branch not found", HttpStatus.NOT_FOUND);
 			default : 
-				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}	
 	}
 	
-	@PutMapping("branch/{branchId}")
-	@ResponseBody public void updateBranch(@PathVariable int branchId, @RequestBody BranchPOJO updateBranch){
+	@PutMapping(value = "branch/{branchId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ResponseBody public ResponseEntity<?> updateBranch(@PathVariable int branchId, @RequestBody BranchPOJO updateBranch){
 		try {
 			library.save(updateBranch, branchId);
+			updateBranch.setBranchId(branchId);
+			return new ResponseEntity<BranchPOJO>(updateBranch, HttpStatus.OK);
 		}catch(HttpClientErrorException e){
 			switch(e.getStatusCode()) {
 			case NOT_FOUND:
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>("Branch not found", HttpStatus.NOT_FOUND);
 			default : 
-				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}		
 	}
 	
-	@GetMapping("branch/{branchId}/books")
-	@ResponseBody public LibraryPOJO[] getBooks(@PathVariable int branchId) {
+	@GetMapping(value = "branch/{branchId}/books", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ResponseBody public ResponseEntity<?> getBooks(@PathVariable int branchId) {
 		try {
-			return library.getBooks(branchId);
+			 LibraryPOJO[] lib = library.getBooks(branchId);
+			 return new ResponseEntity<LibraryPOJO[]>(lib, HttpStatus.OK);
 		}catch(HttpClientErrorException e){
 			switch(e.getStatusCode()) {
 			case NOT_FOUND:
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>("Branch not found", HttpStatus.NOT_FOUND);
 			default : 
-				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}	
 	}
 	
-	@GetMapping("branch/{branchId}/book/{bookId}")
-	@ResponseBody public LibraryPOJO getBookInfo(@PathVariable int branchId, @PathVariable int bookId) {
+	@GetMapping(value = "branch/{branchId}/book/{bookId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ResponseBody public ResponseEntity<?> getBookInfo(@PathVariable int branchId, @PathVariable int bookId) {
 		
 		try {
-			return library.getBookInfo(bookId, branchId);
+			LibraryPOJO lib = library.getBookInfo(bookId, branchId);
+			return new ResponseEntity<LibraryPOJO>(lib, HttpStatus.OK);
 		}catch(HttpClientErrorException e){
 			switch(e.getStatusCode()) {
 			case NOT_FOUND:
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>("Book not found in this Branch", HttpStatus.NOT_FOUND);
 			default : 
-				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 	}
 	
-	@PutMapping("branch/{branchId}/book/{bookId}")
-	@ResponseBody public void updateNoofCopies(@PathVariable int branchId, @PathVariable int bookId, @RequestBody LibraryPOJO newCopies) {
+	@PutMapping(value = "branch/{branchId}/book/{bookId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ResponseBody public ResponseEntity<?> updateNoofCopies(@PathVariable int branchId, @PathVariable int bookId, @RequestBody LibraryPOJO newCopies) {
 		try {
+			LibraryPOJO book = library.getBookInfo(bookId, branchId);
 			library.addCopies(bookId, branchId, newCopies);
+			int copies = book.getNoOfCopies() + newCopies.getNoOfCopies();
+			book.setNoOfCopies(copies);
+			return new ResponseEntity<LibraryPOJO>(book, HttpStatus.OK);
 		}catch(HttpClientErrorException e){
 			switch(e.getStatusCode()) {
 			case NOT_FOUND:
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>("Book not found in this Branch", HttpStatus.NOT_FOUND);
 			default : 
-				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 	}

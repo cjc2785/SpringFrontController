@@ -7,15 +7,17 @@ import com.ss.lms.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -24,74 +26,49 @@ public class BorrowerController {
 
 	@Autowired
 	private BorrowerService borrowerService;
+	
+	//Handle all rest template 404s by sending a 404 to 
+	//  the client
+	@ExceptionHandler(HttpClientErrorException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public @ResponseBody String handleResourceNotFound() { 
+		return "Resource not found";
+	}
 
 	//Get all branches
-	@GetMapping("branches")
+	@GetMapping(
+			value="branches",
+			produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public LibraryBranch[] getBranches() {
-		try {
-			return borrowerService.getBranches();
-		} catch (HttpClientErrorException e) {
-			throw new ResponseStatusException(
-					HttpStatus.INTERNAL_SERVER_ERROR, 
-					"borrower service is down");
-		}
+		return borrowerService.getBranches();
 	}
 
 	//Get books with at least 1 copy available at branch
-	@GetMapping("branches/{branchId}/books")
+	@GetMapping(value="branches/{branchId}/books",
+			produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public Book[] getBooks(@PathVariable("branchId") int branchId) {
-		try {
+
 			return borrowerService.getBooks(branchId);
-		} catch(HttpClientErrorException e) {
-			switch(e.getStatusCode()) {
-			case NOT_FOUND :
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-			default:
-				throw new ResponseStatusException(
-						HttpStatus.INTERNAL_SERVER_ERROR, 
-						"borrower service is down");
-			}
-		}
 	}
 
 	//Get branches where borrower has at least 1 book checked out
-	@GetMapping("borrowers/{cardNo}/branches")
+	@GetMapping(value="borrowers/{cardNo}/branches",
+			produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public LibraryBranch[] getBranches(@PathVariable("cardNo") int cardNo) {
-		try {
+	
 			return borrowerService.getBranches(cardNo);
-		} catch(HttpClientErrorException e) {
-			switch(e.getStatusCode()) {
-			case NOT_FOUND :
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-			default:
-				throw new ResponseStatusException(
-						HttpStatus.INTERNAL_SERVER_ERROR, 
-						"borrower service is down");
-			}
-		}
 	}
 
 
 
 	//Get all books checked out by borrower at library
-	@GetMapping("borrowers/{cardNo}/branches/{branchId}/books")
+	@GetMapping(value="borrowers/{cardNo}/branches/{branchId}/books",
+			produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public Book[] getBooks(
 			@PathVariable("cardNo") int cardNo,
 			@PathVariable("branchId") int branchId) {
-		try {
+	
 			return borrowerService.getBooks(cardNo, branchId);
-		} catch(HttpClientErrorException e) {
-			switch(e.getStatusCode()) {
-			case NOT_FOUND :
-				throw new ResponseStatusException(
-						HttpStatus.NOT_FOUND, e.getMessage()
-						);
-			default:
-				throw new ResponseStatusException(
-						HttpStatus.INTERNAL_SERVER_ERROR, 
-						"borrower service is down");
-			}
-		}
 	} 
 
 	//Check out a book
@@ -103,21 +80,7 @@ public class BorrowerController {
 			@PathVariable("branchId") int branchId,
 			@PathVariable("bookId") int bookId) {
 
-		try {
-			borrowerService.insertLoan(cardNo, branchId, bookId);
-		} catch(HttpClientErrorException e) {
-			
-			switch(e.getStatusCode()) {
-			case NOT_FOUND :
-				throw new ResponseStatusException(
-						HttpStatus.NOT_FOUND, e.getMessage()
-						);
-			default:
-				throw new ResponseStatusException(
-						HttpStatus.INTERNAL_SERVER_ERROR, 
-						"borrower service is down");
-			}
-		}
+			borrowerService.insertLoan(cardNo, branchId, bookId);	
 	} 
 
 
@@ -129,19 +92,6 @@ public class BorrowerController {
 			@PathVariable("branchId") int branchId,
 			@PathVariable("bookId") int bookId) {
 
-		try {
 			borrowerService.deleteLoan(cardNo, branchId, bookId);
-		} catch(HttpClientErrorException e) {
-			switch(e.getStatusCode()) {
-			case NOT_FOUND :
-				throw new ResponseStatusException(
-						HttpStatus.NOT_FOUND, e.getMessage()
-						);
-			default:
-				throw new ResponseStatusException(
-						HttpStatus.INTERNAL_SERVER_ERROR, 
-						"borrower service is down");
-			}
-		}
 	} 
 }

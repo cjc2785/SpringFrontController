@@ -1,6 +1,8 @@
 package com.ss.lms.model;
 
 
+import com.sun.istack.NotNull;
+
 public class Author {
 
     private Integer authorId;

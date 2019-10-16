@@ -1,12 +1,14 @@
 package com.ss.lms.controller;
 
 
+
 import com.ss.lms.model.*;
 import com.ss.lms.services.AdminService;
 import org.springframework.http.HttpStatus;
 
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 
@@ -20,6 +22,9 @@ public class AdminController {
         this.adminService = adminService;
     }
 
+    @ExceptionHandler(HttpClientErrorException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody String handleResourceNotFound( ) {return "Could not find resource";}
     //AUTHOR//
     //AUTHOR//
     @PostMapping("/author/")
@@ -27,10 +32,17 @@ public class AdminController {
         adminService.newAuthor(authorDetails);
     }
     @PutMapping("/author/{a_id}")
+
     public void  updateAuthorById( @PathVariable Integer a_id ,@Valid @RequestBody Author authorDetails)
     {
-        adminService.editAuthor(authorDetails,a_id);
+         adminService.editAuthor(authorDetails,a_id);
+         Author author = adminService.getAuthor(a_id);
+//         if (author == null) throw new BadRequestException();
+
+
     }
+
+
     @GetMapping("/authors")
     public Author[] getAllAuthors() {
         return adminService.getAuthors();
@@ -39,7 +51,9 @@ public class AdminController {
     @GetMapping("/author/{a_id}")
     public Author getAuthorById(
             @PathVariable Integer a_id) {
-        return adminService.getAuthor(a_id);
+       Author author = adminService.getAuthor(a_id);
+//        if (author == null) throw new BadRequestException();
+        return author;
     }
     @DeleteMapping("/author/{a_id}")
     public void deleteAuthorById(@PathVariable Integer a_id){

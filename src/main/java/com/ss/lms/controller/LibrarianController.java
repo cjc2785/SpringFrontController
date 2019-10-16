@@ -2,6 +2,7 @@ package com.ss.lms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +25,13 @@ public class LibrarianController {
 	@Autowired
 	private LibrarianService library;
 
-	@GetMapping("branches")
+	@GetMapping(value = "branches", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ResponseBody public ResponseEntity<?> getBranches(){
 		BranchPOJO[] branch = library.getBranches();
 		return new ResponseEntity<BranchPOJO[]>(branch, HttpStatus.OK);
 	}
 	
-	@GetMapping("branch/{branchId}")
+	@GetMapping(value = "branch/{branchId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ResponseBody public ResponseEntity<?> getBranchInfo(@PathVariable int branchId){
 		try {
 			BranchPOJO branch = library.getBranchInfo(branchId);
@@ -45,7 +46,7 @@ public class LibrarianController {
 		}	
 	}
 	
-	@PutMapping("branch/{branchId}")
+	@PutMapping(value = "branch/{branchId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ResponseBody public ResponseEntity<?> updateBranch(@PathVariable int branchId, @RequestBody BranchPOJO updateBranch){
 		try {
 			library.save(updateBranch, branchId);
@@ -61,7 +62,7 @@ public class LibrarianController {
 		}		
 	}
 	
-	@GetMapping("branch/{branchId}/books")
+	@GetMapping(value = "branch/{branchId}/books", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ResponseBody public ResponseEntity<?> getBooks(@PathVariable int branchId) {
 		try {
 			 LibraryPOJO[] lib = library.getBooks(branchId);
@@ -76,7 +77,7 @@ public class LibrarianController {
 		}	
 	}
 	
-	@GetMapping("branch/{branchId}/book/{bookId}")
+	@GetMapping(value = "branch/{branchId}/book/{bookId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ResponseBody public ResponseEntity<?> getBookInfo(@PathVariable int branchId, @PathVariable int bookId) {
 		
 		try {
@@ -92,7 +93,7 @@ public class LibrarianController {
 		}
 	}
 	
-	@PutMapping("branch/{branchId}/book/{bookId}")
+	@PutMapping(value = "branch/{branchId}/book/{bookId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ResponseBody public ResponseEntity<?> updateNoofCopies(@PathVariable int branchId, @PathVariable int bookId, @RequestBody LibraryPOJO newCopies) {
 		try {
 			LibraryPOJO book = library.getBookInfo(bookId, branchId);

@@ -4,9 +4,11 @@ package com.ss.lms.controller;
 
 import com.ss.lms.model.*;
 import com.ss.lms.services.AdminService;
+import org.dom4j.Branch;
 import org.springframework.http.HttpStatus;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -38,7 +40,6 @@ public class AdminController {
          adminService.editAuthor(authorDetails,a_id);
          Author author = adminService.getAuthor(a_id);
 //         if (author == null) throw new BadRequestException();
-
 
     }
 
@@ -101,9 +102,15 @@ public class AdminController {
     }
 
     @GetMapping("/branch/{b_id}")
-    public LibraryBranch getLibraryBranchById(@PathVariable Integer b_id)
+    public ResponseEntity<?> getLibraryBranchById(@PathVariable Integer b_id)
     {
-        return adminService.getBranch(b_id);
+        LibraryBranch branch = adminService.getBranch(b_id);
+        if (branch == null)
+        {
+            return new ResponseEntity<>("not valid", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<LibraryBranch>(branch, HttpStatus.OK);
+
     }
     @PutMapping("/branch/{b_id}")
     @ResponseStatus(HttpStatus.ACCEPTED)

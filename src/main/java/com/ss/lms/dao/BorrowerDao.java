@@ -1,17 +1,23 @@
 package com.ss.lms.dao;
 
 import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+
+
 import org.springframework.stereotype.Component;
+
 
 import com.ss.lms.model.*;
 
 @Component
 public class BorrowerDao {
 	
-
-	RestTemplate template = new RestTemplate();
+	@Autowired
+	RestTemplate template;
 	
-	static final String BASE = "http://localhost:8081/lms/borrower/";
+	static final String BASE = "http://BORROWER-SERVICE/lms/borrower/";
 
 	public LibraryBranch[] getBranches() {
 		
@@ -63,5 +69,11 @@ public class BorrowerDao {
 		
 		template.delete(
 				url, cardNo, branchId, bookId);
+	}
+	
+	@Bean
+	@LoadBalanced
+	RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 }

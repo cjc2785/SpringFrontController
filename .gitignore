@@ -31,5 +31,5 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/java/com/ss/lms/secret/ServerCredential.java
-src/main/resources/application.properties
+# src/main/java/com/ss/lms/secret/ServerCredential.java
+# src/main/resources/application.properties

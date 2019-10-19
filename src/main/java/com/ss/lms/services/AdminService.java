@@ -40,6 +40,7 @@ public class AdminService {
     {
         return  adminDao.getAuthors();
     }
+    public Book[] getBooksAuthorId(Integer authorId) {return adminDao.getBooksAuthorId(authorId);}
     public Author getAuthor(Integer authorId)
     {
         return adminDao.getAuthor(authorId);

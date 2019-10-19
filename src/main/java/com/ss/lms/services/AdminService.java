@@ -5,6 +5,8 @@ import com.ss.lms.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdminService {
     @Autowired
@@ -56,7 +58,7 @@ public class AdminService {
     {
         adminDao.deleteAuthor(a_id);
     }
-
+    public Book[] getBooksAuthId(Integer authorId) { return adminDao.getBooksByAuthor(authorId);}
 
 
 

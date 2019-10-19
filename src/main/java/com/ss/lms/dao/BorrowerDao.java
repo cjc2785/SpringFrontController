@@ -70,10 +70,5 @@ public class BorrowerDao {
 		template.delete(
 				url, cardNo, branchId, bookId);
 	}
-	
-	@Bean
-	@LoadBalanced
-	RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
+
 }

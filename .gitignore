@@ -32,3 +32,4 @@ build/
 .vscode/
 
 src/main/java/com/ss/lms/secret/ServerCredential.java
+src/main/resources/application.properties

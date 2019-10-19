@@ -3,8 +3,8 @@ package com.ss.lms.dao;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.ss.lms.model.BranchPOJO;
-import com.ss.lms.model.LibraryPOJO;
+import com.ss.lms.model.BookCopies;
+import com.ss.lms.model.LibraryBranch;
 
 @Component
 public class LibrarianDAO {
@@ -13,32 +13,32 @@ public class LibrarianDAO {
 	
 	static final String BASE = "http://localhost:8082/lms/librarian/";
 	
-	public BranchPOJO[] getBranches() {
+	public LibraryBranch[] getBranches() {
 		String url = BASE + "branches";
-		return template.getForObject(url, BranchPOJO[].class);
+		return template.getForObject(url, LibraryBranch[].class);
 	}
 	
-	public BranchPOJO getBranchInfo(int branchId) {		
+	public LibraryBranch getBranchInfo(int branchId) {		
 		String url = BASE + "branch/{branchId}";
-		return template.getForObject(url, BranchPOJO.class, branchId);
+		return template.getForObject(url, LibraryBranch.class, branchId);
 	}
 	
-	public void save(BranchPOJO updateBranch, int branchId) {
+	public void save(LibraryBranch updateBranch, int branchId) {
 		String url = BASE + "branch/{branchId}";
 		template.put(url, updateBranch, branchId);
 	}
 	
-	public LibraryPOJO[] getBooks(int branchId) {
+	public BookCopies[] getBooks(int branchId) {
 		String url = BASE + "branch/{branchId}/books";
-		return template.getForObject(url, LibraryPOJO[].class, branchId);
+		return template.getForObject(url, BookCopies[].class, branchId);
 	}
 	
-	public LibraryPOJO getBookInfo(int branchId, int bookId) {
+	public BookCopies getBookInfo(int branchId, int bookId) {
 		String url = BASE + "branch/{branchId}/book/{bookId}";
-		return template.getForObject(url, LibraryPOJO.class, branchId, bookId);
+		return template.getForObject(url, BookCopies.class, branchId, bookId);
 	}
 	
-	public void addCopies(int branchId, int bookId, LibraryPOJO newCopies) {
+	public void addCopies(int branchId, int bookId, BookCopies newCopies) {
 		String url = BASE + "branch/{branchId}/book/{bookId}";
 		template.put(url, newCopies, branchId, bookId);
 	}

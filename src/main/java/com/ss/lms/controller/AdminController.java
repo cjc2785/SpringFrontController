@@ -29,11 +29,11 @@ public class AdminController {
     public @ResponseBody String handleResourceNotFound( ) {return "Could not find resource";}
     //AUTHOR//
     //AUTHOR//
-    @PostMapping("/author/")
+    @PostMapping("/authors")
     public void addAuthor(@RequestBody Author authorDetails) {
         adminService.newAuthor(authorDetails);
     }
-    @PutMapping("/author/{a_id}")
+    @PutMapping("/authors/{a_id}")
 
     public void  updateAuthorById( @PathVariable Integer a_id ,@Valid @RequestBody Author authorDetails)
     {
@@ -48,38 +48,44 @@ public class AdminController {
     public Author[] getAllAuthors() {
         return adminService.getAuthors();
     }
+    @GetMapping("/authors/{a_id}/books")
+    public Book[] getAllBooksAuthorId(@PathVariable Integer a_id)
+    {
+        Author author = adminService.getAuthor(a_id);
+        return adminService.getBooksAuthorId(author.getAuthorId());
+    }
 
-    @GetMapping("/author/{a_id}")
+    @GetMapping("/authors/{a_id}")
     public Author getAuthorById(
             @PathVariable Integer a_id) {
        Author author = adminService.getAuthor(a_id);
 //        if (author == null) throw new BadRequestException();
         return author;
     }
-    @DeleteMapping("/author/{a_id}")
+    @DeleteMapping("/authors/{a_id}")
     public void deleteAuthorById(@PathVariable Integer a_id){
         adminService.deleteAuthor(a_id);
     }
 
     //Publisher//
     //Publisher//
-    @PostMapping("/publisher/")
+    @PostMapping("/publishers")
     public @Valid @ResponseBody
     void addPublisher(@RequestBody Publisher publisherDetails)
     {
         adminService.newPublisher(publisherDetails);
     }
-    @GetMapping("/publisher/{p_id}")
+    @GetMapping("/publishers/{p_id}")
     public Publisher getPublisherById(@PathVariable Integer p_id)
     {
         return adminService.getPublisher(p_id);
     }
-    @PutMapping("/publisher/{p_id}")
+    @PutMapping("/publishers/{p_id}")
     public void updatePublisherById( @PathVariable Integer p_id ,@Valid @RequestBody Publisher publisherDetails)
     {
         adminService.editPublisher(publisherDetails,p_id);
     }
-    @DeleteMapping("/publisher/{p_id}")
+    @DeleteMapping("/publishers/{p_id}")
     public void deletePublisherById(@PathVariable Integer p_id)
     {
         adminService.deletePublisher(p_id);
@@ -89,19 +95,19 @@ public class AdminController {
     {
         return adminService.getPublishers();
     }
-
+    
     ///LIBRARY BRANCH///
     ///LIBRARY BRANCH///
     ///LIBRARY BRANCH///
     ///LIBRARY BRANCH///
-    @PostMapping("/branch/")
+    @PostMapping("/branches/")
     public @Valid @ResponseBody
     void addLibraryBranch(@RequestBody LibraryBranch libraryBranchDetails)
     {
         adminService.newBranch(libraryBranchDetails);
     }
 
-    @GetMapping("/branch/{b_id}")
+    @GetMapping("/branches/{b_id}")
     public ResponseEntity<?> getLibraryBranchById(@PathVariable Integer b_id)
     {
         LibraryBranch branch = adminService.getBranch(b_id);
@@ -112,13 +118,13 @@ public class AdminController {
         return new ResponseEntity<LibraryBranch>(branch, HttpStatus.OK);
 
     }
-    @PutMapping("/branch/{b_id}")
+    @PutMapping("/branches/{b_id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateLibraryBranchById( @PathVariable Integer b_id, @RequestBody LibraryBranch libraryBranch)
     {
         adminService.editBranch(libraryBranch,b_id);
     }
-    @DeleteMapping("/branch/{b_id}")
+    @DeleteMapping("/branches/{b_id}")
     public void deleteLibraryBranchById(@PathVariable Integer b_id)
     {
          adminService.deleteBranch(b_id);
@@ -133,25 +139,25 @@ public class AdminController {
    ///Borrower///
    ///Borrower///
    ///Borrower///
-    @PostMapping("/borrower/")
+    @PostMapping("/borrowers/")
     @ResponseStatus(HttpStatus.CREATED)
     public @Valid @ResponseBody
     void addLibraryBranch(@RequestBody Borrower borrowerDetails)
     {
         adminService.newBorrower(borrowerDetails);
     }
-    @GetMapping("/borrower/{c_n}")
+    @GetMapping("/borrowers/{c_n}")
     @ResponseStatus(HttpStatus.OK)
-    public Borrower getBorrowerByCardNo(@PathVariable Integer br_id)
+    public Borrower getBorrowerByCardNo(@PathVariable Integer c_n)
     {
-      return adminService.getBorrower(br_id);
+      return adminService.getBorrower(c_n);
     }
-    @PutMapping("/borrower/{c_n}")
+    @PutMapping("/borrowers/{c_n}")
     public void updateBorrowerByCardNo( @PathVariable Integer c_n ,@Valid @RequestBody Borrower borrowerDetails)
     {
         adminService.editBorrower(borrowerDetails,c_n);
     }
-    @DeleteMapping("/borrower/{c_n}")
+    @DeleteMapping("/borrowers/{c_n}")
     public void deleteBorrowerByCardNo(@PathVariable Integer c_n)
     {
          adminService.deleteBorrower(c_n);
@@ -165,21 +171,21 @@ public class AdminController {
     ///Book///
     ///Book///
     ///Book///
-    @PostMapping("/book/")
+    @PostMapping("/books/")
     @ResponseStatus(HttpStatus.CREATED)
     public void addBook(@PathVariable Integer bk_id, @RequestBody Book book) { }
 
-    @GetMapping("/book/{bk_id}")
+    @GetMapping("/books/{bk_id}")
     public Book getBookById(@PathVariable Integer bk_id)
     {
         return adminService.getBook(bk_id);
     }
-    @PutMapping("/book/{bk_id}")
+    @PutMapping("/books/{bk_id}")
     public void updateBookById( @PathVariable Integer bk_id ,@Valid @RequestBody Book bookDetails)
     {
         adminService.editBook(bookDetails,bk_id);
     }
-    @DeleteMapping("/book/{bk_id}")
+    @DeleteMapping("/books/{bk_id}")
     public void deleteBookById(@PathVariable Integer bk_id)
     {
          adminService.deleteBook(bk_id);
@@ -195,7 +201,7 @@ public class AdminController {
     ///BOOK LOANS///
     @GetMapping("/loans")
     public BookLoans[] getAllBookLoans() {return adminService.getBookLoans();}
-    @PutMapping("/loan/borrower/{c_n}/book/{bk_id}")
+    @PutMapping("/loans/borrowers/{c_n}/books/{bk_id}")
     public void updateDueDate(@PathVariable Integer c_n, @PathVariable Integer bk_id,@RequestBody BookLoans bookLoansDetail)
     {
         adminService.editBookLoan(bookLoansDetail,c_n,bk_id);

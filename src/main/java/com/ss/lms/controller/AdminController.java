@@ -4,11 +4,9 @@ package com.ss.lms.controller;
 
 import com.ss.lms.model.*;
 import com.ss.lms.services.AdminService;
-import org.dom4j.Branch;
 import org.springframework.http.HttpStatus;
 
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -29,17 +27,18 @@ public class AdminController {
     public @ResponseBody String handleResourceNotFound( ) {return "Could not find resource";}
     //AUTHOR//
     //AUTHOR//
-    @PostMapping("/authors")
+    @PostMapping("/author/")
     public void addAuthor(@RequestBody Author authorDetails) {
         adminService.newAuthor(authorDetails);
     }
-    @PutMapping("/authors/{a_id}")
+    @PutMapping("/author/{a_id}")
 
     public void  updateAuthorById( @PathVariable Integer a_id ,@Valid @RequestBody Author authorDetails)
     {
          adminService.editAuthor(authorDetails,a_id);
          Author author = adminService.getAuthor(a_id);
 //         if (author == null) throw new BadRequestException();
+
 
     }
 
@@ -48,44 +47,38 @@ public class AdminController {
     public Author[] getAllAuthors() {
         return adminService.getAuthors();
     }
-    @GetMapping("/authors/{a_id}/books")
-    public Book[] getAllBooksAuthorId(@PathVariable Integer a_id)
-    {
-        Author author = adminService.getAuthor(a_id);
-        return adminService.getBooksAuthorId(author.getAuthorId());
-    }
 
-    @GetMapping("/authors/{a_id}")
+    @GetMapping("/author/{a_id}")
     public Author getAuthorById(
             @PathVariable Integer a_id) {
        Author author = adminService.getAuthor(a_id);
 //        if (author == null) throw new BadRequestException();
         return author;
     }
-    @DeleteMapping("/authors/{a_id}")
+    @DeleteMapping("/author/{a_id}")
     public void deleteAuthorById(@PathVariable Integer a_id){
         adminService.deleteAuthor(a_id);
     }
 
     //Publisher//
     //Publisher//
-    @PostMapping("/publishers")
+    @PostMapping("/publisher/")
     public @Valid @ResponseBody
     void addPublisher(@RequestBody Publisher publisherDetails)
     {
         adminService.newPublisher(publisherDetails);
     }
-    @GetMapping("/publishers/{p_id}")
+    @GetMapping("/publisher/{p_id}")
     public Publisher getPublisherById(@PathVariable Integer p_id)
     {
         return adminService.getPublisher(p_id);
     }
-    @PutMapping("/publishers/{p_id}")
+    @PutMapping("/publisher/{p_id}")
     public void updatePublisherById( @PathVariable Integer p_id ,@Valid @RequestBody Publisher publisherDetails)
     {
         adminService.editPublisher(publisherDetails,p_id);
     }
-    @DeleteMapping("/publishers/{p_id}")
+    @DeleteMapping("/publisher/{p_id}")
     public void deletePublisherById(@PathVariable Integer p_id)
     {
         adminService.deletePublisher(p_id);
@@ -95,36 +88,30 @@ public class AdminController {
     {
         return adminService.getPublishers();
     }
-    
+
     ///LIBRARY BRANCH///
     ///LIBRARY BRANCH///
     ///LIBRARY BRANCH///
     ///LIBRARY BRANCH///
-    @PostMapping("/branches/")
+    @PostMapping("/branch/")
     public @Valid @ResponseBody
     void addLibraryBranch(@RequestBody LibraryBranch libraryBranchDetails)
     {
         adminService.newBranch(libraryBranchDetails);
     }
 
-    @GetMapping("/branches/{b_id}")
-    public ResponseEntity<?> getLibraryBranchById(@PathVariable Integer b_id)
+    @GetMapping("/branch/{b_id}")
+    public LibraryBranch getLibraryBranchById(@PathVariable Integer b_id)
     {
-        LibraryBranch branch = adminService.getBranch(b_id);
-        if (branch == null)
-        {
-            return new ResponseEntity<>("not valid", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<LibraryBranch>(branch, HttpStatus.OK);
-
+        return adminService.getBranch(b_id);
     }
-    @PutMapping("/branches/{b_id}")
+    @PutMapping("/branch/{b_id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateLibraryBranchById( @PathVariable Integer b_id, @RequestBody LibraryBranch libraryBranch)
     {
         adminService.editBranch(libraryBranch,b_id);
     }
-    @DeleteMapping("/branches/{b_id}")
+    @DeleteMapping("/branch/{b_id}")
     public void deleteLibraryBranchById(@PathVariable Integer b_id)
     {
          adminService.deleteBranch(b_id);
@@ -139,25 +126,25 @@ public class AdminController {
    ///Borrower///
    ///Borrower///
    ///Borrower///
-    @PostMapping("/borrowers/")
+    @PostMapping("/borrower/")
     @ResponseStatus(HttpStatus.CREATED)
     public @Valid @ResponseBody
     void addLibraryBranch(@RequestBody Borrower borrowerDetails)
     {
         adminService.newBorrower(borrowerDetails);
     }
-    @GetMapping("/borrowers/{c_n}")
+    @GetMapping("/borrower/{c_n}")
     @ResponseStatus(HttpStatus.OK)
-    public Borrower getBorrowerByCardNo(@PathVariable Integer c_n)
+    public Borrower getBorrowerByCardNo(@PathVariable Integer br_id)
     {
-      return adminService.getBorrower(c_n);
+      return adminService.getBorrower(br_id);
     }
-    @PutMapping("/borrowers/{c_n}")
+    @PutMapping("/borrower/{c_n}")
     public void updateBorrowerByCardNo( @PathVariable Integer c_n ,@Valid @RequestBody Borrower borrowerDetails)
     {
         adminService.editBorrower(borrowerDetails,c_n);
     }
-    @DeleteMapping("/borrowers/{c_n}")
+    @DeleteMapping("/borrower/{c_n}")
     public void deleteBorrowerByCardNo(@PathVariable Integer c_n)
     {
          adminService.deleteBorrower(c_n);
@@ -171,21 +158,21 @@ public class AdminController {
     ///Book///
     ///Book///
     ///Book///
-    @PostMapping("/books/")
+    @PostMapping("/book/")
     @ResponseStatus(HttpStatus.CREATED)
     public void addBook(@PathVariable Integer bk_id, @RequestBody Book book) { }
 
-    @GetMapping("/books/{bk_id}")
+    @GetMapping("/book/{bk_id}")
     public Book getBookById(@PathVariable Integer bk_id)
     {
         return adminService.getBook(bk_id);
     }
-    @PutMapping("/books/{bk_id}")
+    @PutMapping("/book/{bk_id}")
     public void updateBookById( @PathVariable Integer bk_id ,@Valid @RequestBody Book bookDetails)
     {
         adminService.editBook(bookDetails,bk_id);
     }
-    @DeleteMapping("/books/{bk_id}")
+    @DeleteMapping("/book/{bk_id}")
     public void deleteBookById(@PathVariable Integer bk_id)
     {
          adminService.deleteBook(bk_id);
@@ -201,7 +188,7 @@ public class AdminController {
     ///BOOK LOANS///
     @GetMapping("/loans")
     public BookLoans[] getAllBookLoans() {return adminService.getBookLoans();}
-    @PutMapping("/loans/borrowers/{c_n}/books/{bk_id}")
+    @PutMapping("/loan/borrower/{c_n}/book/{bk_id}")
     public void updateDueDate(@PathVariable Integer c_n, @PathVariable Integer bk_id,@RequestBody BookLoans bookLoansDetail)
     {
         adminService.editBookLoan(bookLoansDetail,c_n,bk_id);

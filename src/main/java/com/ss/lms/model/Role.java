@@ -20,6 +20,7 @@ public class Role {
 	@Column
 	private String roleName;
 	
+	public Role() { }
 
 	public Role(Integer roleId, String roleName) {
 		this.roleId = roleId;

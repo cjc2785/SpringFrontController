@@ -83,11 +83,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .authorizeRequests()
                     .antMatchers("/lms/borrower/**/*")
-                    .authenticated()
+                    .hasAuthority("BORROWER")
                     .anyRequest()
                         .permitAll();
 
-        // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }

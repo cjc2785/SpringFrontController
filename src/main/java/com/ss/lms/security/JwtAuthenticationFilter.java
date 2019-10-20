@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ss.lms.exceptions.BadJwtException;
 import com.ss.lms.model.UserPrincipal;
 import com.ss.lms.services.UserPrincipalService;
 
@@ -32,25 +33,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		String jwt = getJwtFromRequest(request);
 
-		if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-			Integer userId = tokenProvider.getUserIdFromJwt(jwt);
+		try {
 
+			if (StringUtils.hasText(jwt)) {
+				
+				tokenProvider.validateToken(jwt);
+				Integer userId = tokenProvider.getUserIdFromJwt(jwt);
 
-			UserPrincipal principal = principalService.findById(userId);
+				UserPrincipal principal = principalService.findById(userId);
 
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-					principal, null, principal.getAuthorities());
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						principal, null, principal.getAuthorities());
 
-			authentication.setDetails(
-					new WebAuthenticationDetailsSource().buildDetails(request)
-					);
+				authentication.setDetails(
+						new WebAuthenticationDetailsSource().buildDetails(request)
+						);
 
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+				SecurityContextHolder.getContext()
+					.setAuthentication(authentication);
+			}
+			filterChain.doFilter(request, response);
+		} catch (BadJwtException e) {
+	
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid token");
 		}
-
-
-		filterChain.doFilter(request, response);
-
 	}
 
 	private String getJwtFromRequest(HttpServletRequest request) {
@@ -62,5 +68,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		return null;
 	}
-
 }

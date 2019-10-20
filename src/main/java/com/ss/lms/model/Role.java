@@ -1,11 +1,24 @@
 package com.ss.lms.model;
 
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="tbl_role")
 public class Role {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer roleId;
 	
+	@Column
 	private String roleName;
-	
 	
 
 	public Role(Integer roleId, String roleName) {
@@ -28,4 +41,19 @@ public class Role {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+	
+    @Override
+    public boolean equals(Object o) {
+   
+        if (o == null || !(o instanceof Role)) {
+        	return false;
+        }
+        Role role = (Role)o;
+        return Objects.deepEquals(roleId, role.getRoleId());
+    }
+ 
+    @Override
+    public int hashCode() {
+        return Objects.hash(roleId);
+    }
 }

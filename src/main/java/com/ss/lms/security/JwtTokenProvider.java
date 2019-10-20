@@ -18,8 +18,7 @@ public class JwtTokenProvider {
     private String jwtSecret;
     
 
-    @Value("${app.jwt.expiration}")
-    private Long jwtExpirationInMs;
+    private Long jwtExpirationInMs = 500000000L;
 
 
 

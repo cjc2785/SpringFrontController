@@ -2,21 +2,20 @@ package com.ss.lms.model;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 public class UserPrincipal implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
 
 	private User user;
+	private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(User user) {
+    public UserPrincipal(User user, Collection<? extends GrantedAuthority> authorities) {
     	this.user = user;
+    	this.authorities = authorities;
     }
     
     public User getUser() {
@@ -36,10 +35,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles().stream()
-        		.map(Role::getRoleName)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return authorities;
     }
 
     @Override

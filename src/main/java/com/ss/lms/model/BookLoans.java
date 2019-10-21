@@ -1,63 +1,52 @@
 package com.ss.lms.model;
 
-import java.sql.Date;
 
 public class BookLoans {
-	
-	private int bookId;
-	private int branchId;
-	private int cardNo;
-	private Date dateOut;
-	private Date dueDate;
-	
-	public BookLoans(){};
-	
-	public BookLoans(int book,int branch, int card, Date date,Date due){
-		bookId = book;
-		branchId = branch;
-		cardNo = card;
-		setDateOut(date);
-		setDueDate(due);
-	}
-	
-	
-	
-	public int getBookId() {
-		return bookId;
-	}
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
-	}
-	public int getBranchId() {
-		return branchId;
-	}
-	public void setBranchId(int branchId) {
-		this.branchId = branchId;
-	}
-	public int getCardNo() {
-		return cardNo;
-	}
-	public void setCardNo(int cardNo) {
-		this.cardNo = cardNo;
-	}
+  
+    private Integer bookId;
+    private Integer branchId;
+    private Integer cardNo;
+    private String dateOut;
 
-	public Date getDateOut() {
-		return dateOut;
-	}
+    private String dueDate;
 
-	public void setDateOut(Date dateOut) {
-		this.dateOut = dateOut;
-	}
+    public Integer getBookId() {
+        return bookId;
+    }
 
-	public Date getDueDate() {
-		return dueDate;
-	}
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
+    }
 
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
+    public Integer getBranchId() {
+        return branchId;
+    }
 
+    public void setBranchId(Integer branchId) {
+        this.branchId = branchId;
+    }
 
+    public Integer getCardNo() {
+        return cardNo;
+    }
 
+    public void setCardNo(Integer cardNo) {
+        this.cardNo = cardNo;
+    }
 
+    public String getDateOut() {
+        return dateOut;
+    }
+
+    public void setDateOut(String dateOut) {
+        this.dateOut = dateOut;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
 }

@@ -1,6 +1,5 @@
 package com.ss.lms.model;
 
-
 public class Author {
 
     private Integer authorId;
@@ -8,7 +7,8 @@ public class Author {
     private  String authorName;
     
 
-    public Author(){};
+    public Author(){}
+    
     public Author(Integer auth, String authName){
     	authorId = auth;
     	authorName = authName;

@@ -2,30 +2,32 @@ package com.ss.lms.model;
 
 public class BookCopies {
 	
-	private int bookId;
-	private int branchId;
+	private Book book;
+	private LibraryBranch branch;
 	private int noOfCopies;
 	
-	public BookCopies(int bookId, int branchId, int noOfCopies) {
-		this.bookId = bookId;
-		this.branchId = branchId;
-		this.noOfCopies = noOfCopies;
+	public BookCopies() {}
+	
+	public BookCopies(Book book, LibraryBranch branch, int copies) {
+		this.book = book;
+		this.branch = branch;
+		this.noOfCopies = copies;
 	}
 
-	public int getBookId() {
-		return bookId;
+	public Book getBook() {
+		return book;
 	}
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public void setBook(Book book) {
+		this.book = book;
 	}
 
-	public int getBranchId() {
-		return branchId;
+	public LibraryBranch getBranch() {
+		return branch;
 	}
 
-	public void setBranchId(int branchId) {
-		this.branchId = branchId;
+	public void setBranch(LibraryBranch branch) {
+		this.branch = branch;
 	}
 
 	public int getNoOfCopies() {
@@ -35,4 +37,5 @@ public class BookCopies {
 	public void setNoOfCopies(int noOfCopies) {
 		this.noOfCopies = noOfCopies;
 	}
+
 }

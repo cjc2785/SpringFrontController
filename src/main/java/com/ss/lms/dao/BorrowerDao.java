@@ -68,5 +68,4 @@ public class BorrowerDao {
 		template.delete(
 				url, cardNo, branchId, bookId);
 	}
-
 }

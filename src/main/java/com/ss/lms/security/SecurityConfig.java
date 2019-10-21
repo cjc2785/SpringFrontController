@@ -41,7 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     
     
-
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
@@ -82,8 +81,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
+                    .antMatchers("/lms/librarian/**/*").hasAnyAuthority("ADMIN", "LIBRARIAN")
+                    .antMatchers("/lms/borrower/**/*").hasAnyAuthority("ADMIN", "LIBRARIAN", "BORROWER")
                     .antMatchers("/lms/admin/**/*").hasAuthority("ADMIN")
-                    .antMatchers("/lms/borrower/**/*").hasAnyAuthority("ADMIN", "BORROWER")
                 .anyRequest()
                     .permitAll();
 

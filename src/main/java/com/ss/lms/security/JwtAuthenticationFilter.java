@@ -20,7 +20,6 @@ import com.ss.lms.services.UserPrincipalService;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-
 	@Autowired
 	private JwtTokenProvider tokenProvider;
 

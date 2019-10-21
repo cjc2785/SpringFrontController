@@ -83,9 +83,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .authorizeRequests()
                     .antMatchers("/lms/admin/**/*").hasAuthority("ADMIN")
-                    .antMatchers("/lms/borrower/**/*").hasAuthority("BORROWER")
+                    .antMatchers("/lms/borrower/**/*").hasAnyAuthority("ADMIN", "BORROWER")
                 .anyRequest()
-                        .permitAll();
+                    .permitAll();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

@@ -30,7 +30,10 @@ build/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
+=======
 
 =======
 # src/main/java/com/ss/lms/secret/ServerCredential.java
 # src/main/resources/application.properties
+>>>>>>> fc6477637df70f24564176e5dcb8bf49d1cb3de3

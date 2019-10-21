@@ -85,7 +85,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/lms/librarian/**/*").hasAnyAuthority("ADMIN", "LIBRARIAN")
                     .antMatchers("/lms/borrower/**/*").hasAnyAuthority("ADMIN", "LIBRARIAN", "BORROWER")
                     .antMatchers("/lms/admin/**/*").hasAuthority("ADMIN")
-
                 .anyRequest()
                         .permitAll();
 

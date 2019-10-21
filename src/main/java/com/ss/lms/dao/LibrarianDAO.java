@@ -1,5 +1,6 @@
 package com.ss.lms.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -8,10 +9,11 @@ import com.ss.lms.model.BookCopies;
 
 @Component
 public class LibrarianDAO {
-
-	RestTemplate template = new RestTemplate();
 	
-	static final String BASE = "http://localhost:8082/lms/librarian/";
+	@Autowired
+	RestTemplate template;
+	
+	static final String BASE = "http://LIBRARIAN-SERVICE/lms/librarian/";
 	
 	public LibraryBranch[] getBranches() {
 		String url = BASE + "branches";
